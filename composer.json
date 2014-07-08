@@ -12,7 +12,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"dmstr\\console\\": ""
+			"dmstr\\console\\controllers": "controllers"
 		}
 	}
 }

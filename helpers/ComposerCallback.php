@@ -28,8 +28,8 @@ class ComposerCallback
      */
     public static function init(Event $event)
     {
-        require(__DIR__ . '/../../init');
-        self::yii(['phundament/init']);
+        require(__DIR__ . '/../../../../init');
+        self::yii(['app/init']);
         echo "\nScript-hook 'init' completed.\n\n";
     }
 
@@ -45,7 +45,7 @@ class ComposerCallback
         defined('STDIN') or define('STDIN', fopen('php://stdin', 'r'));
         defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
 
-        $basePath = __DIR__ . '/../../';
+        $basePath = __DIR__ . '/../../../../';
         require($basePath . '/vendor/autoload.php');
         require($basePath . '/vendor/yiisoft/yii2/Yii.php');
         require($basePath . '/common/config/aliases.php');
