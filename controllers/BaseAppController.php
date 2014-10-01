@@ -49,7 +49,7 @@ class BaseAppController extends Controller
 
     protected function execute($command)
     {
-        echo "\n\nExecuting '$command'...\n";
+        echo "\nExecuting '$command'...\n";
         if (($fp = popen($command, "r"))) {
             while (!feof($fp)) {
                 echo fread($fp, 1024);
