@@ -59,5 +59,4 @@ class BaseAppController extends Controller
         echo "\nRunning action '$command'...\n";
         \Yii::$app->runAction($command, $params);
     }
-
 }
