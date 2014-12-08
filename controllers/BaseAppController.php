@@ -27,7 +27,7 @@ class BaseAppController extends Controller
     {
         parent::init();
         foreach ($this->composerExecutables AS $cmd) {
-            exec($cmd, $output, $return);
+            exec($cmd.' 2>&1', $output, $return);
             if ($return == 0) {
                 $this->_composerExecutable = $cmd;
                 return;
