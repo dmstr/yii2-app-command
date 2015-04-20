@@ -22,6 +22,8 @@ use yii\console\Controller;
 class BaseAppController extends Controller
 {
     public $composerExecutables = ['composer.phar', 'composer'];
+    public $defaultAction = 'version';
+
     protected $_composerExecutable = null;
 
     public function init()
@@ -54,6 +56,47 @@ class BaseAppController extends Controller
             echo $cmd->getError();
         }
         echo "\n";
+    }
+
+    /**
+     * create MySQL database from ENV vars and grant permissions
+     *
+     * @param $db database name
+     */
+    public function actionCreateMysqlDb($db = null)
+    {
+        $root          = 'root';
+        $root_password = getenv("DB_ENV_MYSQL_ROOT_PASSWORD");
+        $user          = getenv("DB_ENV_MYSQL_USER");
+        $pass          = getenv("DB_ENV_MYSQL_PASSWORD");
+        $dsn           = getenv("DATABASE_DSN_BASE");
+
+        if ($db === null) {
+            $db            = getenv("DATABASE_DSN_DB");
+        }
+        try {
+            // retry an operation up to 5 times
+            $dbh = \igorw\retry(30, function () use ($dsn, $root, $root_password) {
+                $this->stdout('.');
+                sleep(1);
+                return new \PDO($dsn, $root, $root_password);
+            });
+        } catch (FailingTooHardException $e) {
+            die("Unable to connect to database: " . $e->getMessage());
+        }
+
+        try {
+            $dbh->exec(
+                "CREATE DATABASE IF NOT EXISTS `$db`;
+         GRANT ALL ON `$db`.* TO '$user'@'%' IDENTIFIED BY '$pass';
+         FLUSH PRIVILEGES;"
+            )
+            or die(print_r($dbh->errorInfo(), true));
+        } catch (\PDOException $e) {
+            die("DB ERROR: " . $e->getMessage());
+        }
+
+        $this->stdout("\nDatabase successfully created.\n");
     }
 
     protected function composer($command)
