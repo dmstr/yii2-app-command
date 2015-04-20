@@ -9,6 +9,7 @@
 
 namespace dmstr\console\controllers;
 
+use mikehaertl\shellcommand\Command;
 use yii\base\Exception;
 use yii\console\Controller;
 
@@ -35,6 +36,24 @@ class BaseAppController extends Controller
             }
         }
         throw new Exception('Composer executable not found.');
+    }
+
+    /**
+     * Displays application version from git describe and writes it to `version`
+     */
+    public function actionVersion()
+    {
+        echo "Application Version\n";
+        $cmd = new Command("git describe --dirty");
+        if ($cmd->execute()) {
+            echo $cmd->getOutput();
+            file_put_contents(\Yii::getAlias('@app/version'), $cmd->getOutput());
+        } else {
+            echo $cmd->getOutput();
+            echo $cmd->getStdErr();
+            echo $cmd->getError();
+        }
+        echo "\n";
     }
 
     protected function composer($command)
