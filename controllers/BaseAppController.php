@@ -65,7 +65,7 @@ class BaseAppController extends Controller
      */
     public function actionCreateMysqlDb($db = null)
     {
-        $root          = 'root';
+        $root          = getenv("DB_ENV_MYSQL_ROOT_USER")?:'root';
         $root_password = getenv("DB_ENV_MYSQL_ROOT_PASSWORD");
         $user          = getenv("DB_ENV_MYSQL_USER");
         $pass          = getenv("DB_ENV_MYSQL_PASSWORD");
