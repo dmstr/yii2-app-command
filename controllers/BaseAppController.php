@@ -74,17 +74,19 @@ class BaseAppController extends Controller
         if ($db === null) {
             $db            = getenv("DATABASE_DSN_DB");
         }
+
+        $this->stdout('Creating database on DSN: '.$dsn);
         try {
             // retry an operation up to 5 times
-            $dbh = \igorw\retry(30, function () use ($dsn, $root, $root_password) {
+            $dbh = \igorw\retry(20, function () use ($dsn, $root, $root_password) {
                 $this->stdout('.');
                 sleep(1);
                 return new \PDO($dsn, $root, $root_password);
             });
         } catch (FailingTooHardException $e) {
-            die("Unable to connect to database: " . $e->getMessage());
+            $this->stdout("Unable to connect to database: " . $e->getMessage());
+            \Yii::$app->end(1);
         }
-
         try {
             $dbh->exec(
                 "CREATE DATABASE IF NOT EXISTS `$db`;
