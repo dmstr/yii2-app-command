@@ -75,7 +75,7 @@ class BaseAppController extends Controller
             $db            = getenv("DATABASE_DSN_DB");
         }
 
-        $this->stdout('Creating database on DSN: '.$dsn);
+        $this->stdout("Creating database '{$db}' and granting permissions to user '{$user}' on DSN '{$dsn}' with user '{$root}'");
         try {
             // retry an operation up to 5 times
             $dbh = \igorw\retry(20, function () use ($dsn, $root, $root_password) {
