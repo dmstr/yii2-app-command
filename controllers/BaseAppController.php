@@ -61,12 +61,17 @@ class BaseAppController extends Controller
     /**
      * create MySQL database from ENV vars and grant permissions
      *
+     * Note: skips creation, if root password is not set
+     *
      * @param $db database name
      */
     public function actionCreateMysqlDb($db = null)
     {
         $root          = getenv("DB_ENV_MYSQL_ROOT_USER")?:'root';
         $root_password = getenv("DB_ENV_MYSQL_ROOT_PASSWORD");
+        if (empty($root_password)) {
+            return;
+        }
         $user          = getenv("DB_ENV_MYSQL_USER");
         $pass          = getenv("DB_ENV_MYSQL_PASSWORD");
         $dsn           = getenv("DATABASE_DSN_BASE");
