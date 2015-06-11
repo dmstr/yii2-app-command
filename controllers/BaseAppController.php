@@ -85,6 +85,8 @@ class BaseAppController extends Controller
         $dsn           = getenv("DATABASE_DSN_BASE");
 
         $this->stdout("Creating database '{$db}' and granting permissions to user '{$user}' on DSN '{$dsn}' with user '{$root}'");
+
+        // trying to connect to database with PDO (20 times, interval 1 second)
         try {
             // retry an operation up to 5 times
             $dbh = \igorw\retry(20, function () use ($dsn, $root, $root_password) {
@@ -96,6 +98,9 @@ class BaseAppController extends Controller
             $this->stdout("Unable to connect to database: " . $e->getMessage());
             \Yii::$app->end(1);
         }
+
+        // wait one more second to harden startup and create database credentials
+        sleep(1);
         try {
             $dbh->exec(
                 "CREATE DATABASE IF NOT EXISTS `$db`;
