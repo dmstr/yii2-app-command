@@ -67,6 +67,14 @@ class BaseAppController extends Controller
      */
     public function actionCreateMysqlDb($db = null)
     {
+        if ($db === null) {
+            $db            = getenv("DATABASE_DSN_DB");
+        }
+        if (empty($db)) {
+            $this->stdout('No database configured, skipping setup.');
+            return;
+        }
+
         $root          = getenv("DB_ENV_MYSQL_ROOT_USER")?:'root';
         $root_password = getenv("DB_ENV_MYSQL_ROOT_PASSWORD");
         if (empty($root_password)) {
@@ -75,10 +83,6 @@ class BaseAppController extends Controller
         $user          = getenv("DB_ENV_MYSQL_USER");
         $pass          = getenv("DB_ENV_MYSQL_PASSWORD");
         $dsn           = getenv("DATABASE_DSN_BASE");
-
-        if ($db === null) {
-            $db            = getenv("DATABASE_DSN_DB");
-        }
 
         $this->stdout("Creating database '{$db}' and granting permissions to user '{$user}' on DSN '{$dsn}' with user '{$root}'");
         try {
