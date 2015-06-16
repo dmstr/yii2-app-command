@@ -43,13 +43,13 @@ class BaseAppController extends Controller
     /**
      * Displays application version from git describe and writes it to `version`
      */
-    public function actionVersion()
+    public function actionVersion($alias = '@app/version')
     {
         echo "Application Version\n";
         $cmd = new Command("git describe --dirty");
         if ($cmd->execute()) {
             echo $cmd->getOutput();
-            file_put_contents(\Yii::getAlias('@app/version'), $cmd->getOutput());
+            file_put_contents(\Yii::getAlias($alias), $cmd->getOutput());
         } else {
             echo $cmd->getOutput();
             echo $cmd->getStdErr();
