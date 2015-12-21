@@ -1,7 +1,11 @@
 Phundament Yii 2 Application Management Command
 ===============================================
 
-**NOTE! PROJECT IS IN EARLY DEVELOPMENT STAGE, ALWAYS BACKUP OR COMMIT YOUR FILES BEFORE USING IT!**
+:warning: **Project state: `discontinued/obsolete`**
+
+It is recommended to remove this package from your `composer.json` dependencies.
+
+---
 
 Console base-command to manage your application source code and configuration settings.
 
