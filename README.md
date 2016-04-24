@@ -5,6 +5,10 @@ Phundament Yii 2 Application Management Command
 
 It is recommended to remove this package from your `composer.json` dependencies.
 
+Replacement for `mysql` command: https://github.com/dmstr/yii2-db/blob/master/console/controllers/MysqlController.php
+
+Further replacements: https://github.com/phundament/app/blob/master/src/commands/AppController.php
+
 ---
 
 Console base-command to manage your application source code and configuration settings.
